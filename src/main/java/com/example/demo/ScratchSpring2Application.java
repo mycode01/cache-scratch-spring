@@ -19,22 +19,12 @@ public class ScratchSpring2Application {
     SpringApplication.run(ScratchSpring2Application.class, args);
   }
 
-  @Bean
-  public KeyGenerator keyGenerator(){
-    return new KeyGenerator() {
-      @Override
-      public Object generate(Object target, Method method, Object... params) {
-        return params[0];
-      }
-    };
-  }
-
   @RestController
   public static class DefaultController {
     @Autowired
     CacheManager cacheManager;
 
-    @Cacheable(value = "cacheStore", keyGenerator = "keyGenerator")
+    @Cacheable(value = "cacheStore", key="#id")
     @GetMapping
     public String test(String id) {
       return LocalDateTime.now().toString();
